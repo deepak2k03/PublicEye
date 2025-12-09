@@ -8,7 +8,7 @@ import Logo from "../assets/faviconImage.png"; // adjust path to your src folder
   className="ml-2 h-6 w-6 object-contain"
 />
 
-export default function Navbar() {
+export default function NavBar() {
   const location = useLocation();
 
   const links = [
