@@ -4,7 +4,7 @@ import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
 import NavBar from "./components/NavBar";   // must match filename exactly
-import SideBar from "./components/SideBar";
+// import SideBar from "./components/SideBar";
 import FeedbackForm from "./components/FeedbackForm";
 
 const Home = React.lazy(() => import("./pages/Home"));
@@ -24,7 +24,7 @@ const Report = React.lazy(() => import("./pages/Report"));
 export default function App() {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      <SideBar />
+      {/* <SideBar /> */}
 
       <div className="flex-1 flex flex-col">
         <NavBar />
