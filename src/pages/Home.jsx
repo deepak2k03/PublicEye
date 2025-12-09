@@ -52,7 +52,7 @@ export default function Home() {
         </h1>
         <p className="max-w-3xl mx-auto text-lg md:text-xl mb-8">
           Promoting accountability and trust in governance by making all public service
-          transactions—contracts, permits, approvals—transparent and accessible in real-time.
+          transactions contracts, permits, approvals—transparent and accessible in real-time.
         </p>
         <div className="flex justify-center gap-4">
           <Link
