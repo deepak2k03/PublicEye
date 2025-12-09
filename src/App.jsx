@@ -3,12 +3,10 @@ import React, { Suspense } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
 
-// Components (match filenames exactly)
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar";   // must match filename exactly
 import SideBar from "./components/SideBar";
 import FeedbackForm from "./components/FeedbackForm";
 
-// Lazy-load pages (safer for build/runtime)
 const Home = React.lazy(() => import("./pages/Home"));
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const Projects = React.lazy(() => import("./pages/Projects"));
@@ -26,10 +24,8 @@ const Report = React.lazy(() => import("./pages/Report"));
 export default function App() {
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Sidebar always visible */}
       <SideBar />
 
-      {/* Main content */}
       <div className="flex-1 flex flex-col">
         <NavBar />
 
@@ -42,7 +38,6 @@ export default function App() {
             }
           >
             <Routes>
-              {/* Public Routes */}
               <Route path="/" element={<Home />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/projects" element={<Projects />} />
@@ -56,8 +51,6 @@ export default function App() {
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
               <Route path="/adminlogin" element={<AdminLogin />} />
-
-              {/* Fallback route */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

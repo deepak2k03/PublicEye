@@ -1,12 +1,7 @@
+// src/components/NavBar.jsx
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import Logo from "../assets/faviconImage.png"; // adjust path to your src folder
-
-<img
-  src={Logo}
-  alt="Logo"
-  className="ml-2 h-6 w-6 object-contain"
-/>
+import Logo from "../assets/faviconImage.png"; // adjust path if necessary
 
 export default function NavBar() {
   const location = useLocation();
@@ -27,19 +22,13 @@ export default function NavBar() {
     <nav className="bg-white shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
-          {/* Logo + Site Name */}
           <div className="flex items-center">
             <Link to="/" className="flex items-center text-xl font-bold text-gray-800">
+              <img src={Logo} alt="Logo" className="h-8 w-8 mr-2 object-contain" />
               PublicEye
-              <img
-                src={Logo}      // Place your logo in the public folder
-                alt="Logo"
-                className="ml-2 h-10 w-10 mt-1 object-contain"
-              />
             </Link>
           </div>
 
-          {/* Navigation Links */}
           <div className="hidden md:flex space-x-4 items-center">
             {links.map((link) => (
               <Link
@@ -56,9 +45,7 @@ export default function NavBar() {
             ))}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            {/* You can add a mobile menu toggle here later */}
             <span className="text-gray-600">Menu</span>
           </div>
         </div>
