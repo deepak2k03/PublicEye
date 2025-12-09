@@ -2,8 +2,8 @@ import React from "react";
 import "./App.css";
 
 import { Routes, Route } from "react-router-dom"; // No BrowserRouter here
-import Navbar from "./components/Navbar";
-import Sidebar from "./components/Sidebar";
+import Navbar from "./components/NavBar";
+import Sidebar from "./components/SideBar";
 
 // Import all pages
 import Dashboard from "./pages/Dashboard";
