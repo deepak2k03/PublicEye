@@ -2,7 +2,7 @@
 import React, { Suspense } from "react";
 import "./App.css";
 import { Routes, Route } from "react-router-dom";
-
+// import ProjectCarousel from "./components/ProjectCarousel";
 import NavBar from "./components/NavBar";   // must match filename exactly
 // import SideBar from "./components/SideBar";
 import FeedbackForm from "./components/FeedbackForm";
@@ -18,7 +18,7 @@ const Register = React.lazy(() => import("./pages/Register"));
 const Login = React.lazy(() => import("./pages/Login"));
 const AdminPanel = React.lazy(() => import("./pages/AdminPanel"));
 const NotFound = React.lazy(() => import("./pages/NotFound"));
-const AdminLogin = React.lazy(() => import("./pages/AdminLogin"));
+// const AdminLogin = React.lazy(() => import("./pages/AdminLogin"));
 const Report = React.lazy(() => import("./pages/Report"));
 
 export default function App() {
@@ -28,7 +28,6 @@ export default function App() {
 
       <div className="flex-1 flex flex-col">
         <NavBar />
-
         <main className="p-4 flex-1">
           <Suspense
             fallback={
@@ -47,10 +46,10 @@ export default function App() {
               <Route path="/feedback" element={<FeedbackForm />} />
               <Route path="/report" element={<Report />} />
               <Route path="/verify" element={<VerifyBlockchain />} />
-              <Route path="/admin" element={<AdminPanel />} />
+              {/* <Route path="/admin" element={<AdminPanel />} /> */}
               <Route path="/register" element={<Register />} />
               <Route path="/login" element={<Login />} />
-              <Route path="/adminlogin" element={<AdminLogin />} />
+              {/* <Route path="/adminlogin" element={<AdminLogin />} /> */}
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Suspense>

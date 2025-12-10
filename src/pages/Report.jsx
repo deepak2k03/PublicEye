@@ -1,111 +1,148 @@
 import React, { useState } from "react";
 
-export default function DynamicReportForm() {
-  const domains = {
-    Infrastructure: ["Project Name", "Location", "Issue Description", "Severity"],
-    Health: ["Hospital/Clinic Name", "Issue Description", "Patient Impact"],
-    Education: ["School/College Name", "Issue Description", "Affected Students"],
-    Finance: ["Department/Program", "Issue Description", "Financial Impact"],
-    Other: ["Title", "Description"],
-  };
+/**
+ * Modern dynamic report page (src/pages/Report.jsx)
+ * - Domain selection drives fields
+ * - Severity slider + visual
+ * - Optional location + attachment (mock)
+ * - Confirmation modal before final submit
+ */
 
+const domains = {
+  Infrastructure: ["Project Name", "Location", "Issue Description"],
+  Health: ["Hospital/Clinic Name", "Issue Description", "Patient Impact"],
+  Education: ["School/College Name", "Issue Description", "Affected Students"],
+  Finance: ["Department/Program", "Issue Description", "Financial Impact"],
+  Other: ["Title", "Description"],
+};
+
+export default function Report() {
   const [selectedDomain, setSelectedDomain] = useState("");
   const [formData, setFormData] = useState({});
+  const [severity, setSeverity] = useState(3);
+  const [attachment, setAttachment] = useState(null);
+  const [confirmOpen, setConfirmOpen] = useState(false);
   const [submitted, setSubmitted] = useState(false);
 
-  const handleDomainChange = (e) => {
-    const domain = e.target.value;
-    setSelectedDomain(domain);
-
-    // Initialize formData with empty strings for all fields in this domain
-    const newFormData = {};
-    domains[domain]?.forEach((field) => {
-      newFormData[field] = "";
-    });
-    setFormData(newFormData);
+  const startDomain = (d) => {
+    setSelectedDomain(d);
+    const fd = {};
+    domains[d]?.forEach((f) => (fd[f] = ""));
+    setFormData(fd);
   };
 
-  const handleChange = (e, field) => {
-    setFormData({ ...formData, [field]: e.target.value });
-  };
+  const handleChange = (f, v) => setFormData({ ...formData, [f]: v });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Dynamic report submitted:", { domain: selectedDomain, ...formData });
+  const handleFile = (e) => setAttachment(e.target.files?.[0] || null);
+
+  const canSubmit = selectedDomain && Object.values(formData).every((v) => v && v.trim().length > 0);
+
+  const submit = () => {
+    // mock submit action
+    console.log("Report submitted:", { domain: selectedDomain, severity, attachmentName: attachment?.name, ...formData });
     setSubmitted(true);
-    setSelectedDomain("");
-    setFormData({});
+    setConfirmOpen(false);
+    // reset after small delay
+    setTimeout(() => {
+      setSelectedDomain("");
+      setFormData({});
+      setSeverity(3);
+      setAttachment(null);
+      setSubmitted(false);
+    }, 1400);
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center p-6">
-      <div className="bg-white shadow-lg rounded-2xl w-full max-w-2xl p-8">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6 text-center">
-          Submit a Report
-        </h2>
+    <div className="min-h-screen bg-gray-50 flex items-start justify-center py-10 px-4">
+      <div className="w-full max-w-3xl">
+        <div className="bg-white rounded-2xl p-6 shadow-lg">
+          <h2 className="text-2xl font-semibold text-gray-800 mb-2">Submit a Report</h2>
+          <p className="text-sm text-gray-500 mb-4">Select the domain that best fits the issue and provide details. Reports are reviewed by the authorities.</p>
 
-        {submitted && (
-          <p className="text-green-700 font-semibold mb-4 text-center">
-            Thank you! Your report has been submitted.
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Domain Selector */}
-          <div>
-            <label className="block text-gray-700 font-medium mb-1">Domain / Category</label>
-            <select
-              value={selectedDomain}
-              onChange={handleDomainChange}
-              className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700"
-              required
-            >
-              <option value="">Select Domain</option>
-              {Object.keys(domains).map((domain) => (
-                <option key={domain} value={domain}>
-                  {domain}
-                </option>
-              ))}
-            </select>
+          {/* domain quick buttons */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {Object.keys(domains).map((d) => (
+              <button key={d} onClick={() => startDomain(d)} className={`px-3 py-2 rounded-md text-sm ${selectedDomain === d ? "bg-indigo-600 text-white" : "bg-slate-100 text-slate-700"}`}>
+                {d}
+              </button>
+            ))}
           </div>
 
-          {/* Dynamic Fields */}
-          {selectedDomain &&
-            domains[selectedDomain].map((field) => (
-              <div key={field}>
-                <label className="block text-gray-700 font-medium mb-1">{field}</label>
-                {field === "Issue Description" || field === "Description" || field === "Patient Impact" || field === "Financial Impact" ? (
-                  <textarea
-                    value={formData[field]}
-                    onChange={(e) => handleChange(e, field)}
-                    rows="4"
-                    placeholder={`Enter ${field}`}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700"
-                    required
-                  ></textarea>
-                ) : (
-                  <input
-                    type="text"
-                    value={formData[field]}
-                    onChange={(e) => handleChange(e, field)}
-                    placeholder={`Enter ${field}`}
-                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-700"
-                    required
-                  />
-                )}
-              </div>
-            ))}
+          {/* dynamic form */}
+          {!selectedDomain ? (
+            <div className="py-12 text-center text-sm text-slate-500">Choose a domain above to start the report.</div>
+          ) : (
+            <form onSubmit={(e) => { e.preventDefault(); setConfirmOpen(true); }} className="space-y-4">
+              {domains[selectedDomain].map((field) => (
+                <div key={field}>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{field}</label>
 
-          {/* Submit Button */}
-          {selectedDomain && (
-            <button
-              type="submit"
-              className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-lg transition"
-            >
-              Submit Report
-            </button>
+                  {(field === "Issue Description" || field === "Description" || field.includes("Impact")) ? (
+                    <textarea value={formData[field] || ""} onChange={(e) => handleChange(field, e.target.value)} rows="4" className="w-full border rounded px-3 py-2 text-sm" required />
+                  ) : (
+                    <input value={formData[field] || ""} onChange={(e) => handleChange(field, e.target.value)} className="w-full border rounded px-3 py-2 text-sm" required />
+                  )}
+                </div>
+              ))}
+
+              {/* severity slider */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Severity</label>
+                <div className="flex items-center gap-4">
+                  <input type="range" min="1" max="5" value={severity} onChange={(e) => setSeverity(Number(e.target.value))} />
+                  <div className="text-sm font-semibold">
+                    {["Low","Moderate","Elevated","High","Critical"][severity - 1]}
+                  </div>
+                </div>
+              </div>
+
+              {/* location & attachment */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label className="text-sm text-gray-700 mb-1 block">Location (optional)</label>
+                  <input placeholder="City, district or coordinates" className="w-full border rounded px-3 py-2 text-sm" onChange={(e)=>handleChange("Location", e.target.value)} value={formData["Location"] || ""} />
+                </div>
+                <div>
+                  <label className="text-sm text-gray-700 mb-1 block">Attachment (photo)</label>
+                  <input type="file" onChange={handleFile} className="text-sm" />
+                  {attachment && <div className="text-xs text-slate-600 mt-1">{attachment.name}</div>}
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <button type="submit" disabled={!canSubmit} className={`px-4 py-2 rounded ${canSubmit ? "bg-red-600 text-white hover:bg-red-700" : "bg-gray-200 text-gray-500 cursor-not-allowed"}`}>
+                  Submit Report
+                </button>
+                <button type="button" onClick={() => { setSelectedDomain(""); setFormData({}); setAttachment(null); }} className="px-4 py-2 border rounded">Cancel</button>
+                <div className="ml-auto text-sm text-slate-500">Required: all dynamic fields</div>
+              </div>
+            </form>
           )}
-        </form>
+        </div>
+
+        {/* confirmation modal */}
+        {confirmOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+            <div className="absolute inset-0 bg-black/40" onClick={()=>setConfirmOpen(false)} />
+            <div className="relative bg-white rounded-lg p-6 shadow-lg w-full max-w-md">
+              <h3 className="font-semibold text-lg">Confirm submission</h3>
+              <p className="text-sm text-slate-600 mt-2">You are about to submit this report. Are you sure?</p>
+
+              <div className="mt-4 flex gap-2 justify-end">
+                <button onClick={()=>setConfirmOpen(false)} className="px-3 py-2 border rounded">Edit</button>
+                <button onClick={submit} className="px-4 py-2 bg-red-600 text-white rounded">Yes, submit</button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* submitted toast */}
+        {submitted && (
+          <div className="fixed bottom-6 right-6 bg-white rounded-lg shadow p-4 text-sm">
+            <div className="text-green-700 font-semibold">Report submitted</div>
+            <div className="text-xs text-slate-500">Thanks — officials will review it.</div>
+          </div>
+        )}
       </div>
     </div>
   );

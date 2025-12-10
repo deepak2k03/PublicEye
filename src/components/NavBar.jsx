@@ -14,8 +14,8 @@ export default function NavBar() {
     { name: "Transactions", path: "/transactions" },
     { name: "Feedback", path: "/feedback" },
     { name: "Report", path: "/report" },
-    { name: "Verify", path: "/verify" },
-    { name: "Admin", path: "/adminlogin" },
+    { name: "Verify", path: "/verify" }
+    // { name: "Admin", path: "/adminlogin" },
   ];
 
   return (
