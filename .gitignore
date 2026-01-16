@@ -1,0 +1,42 @@
+# Dependencies
+node_modules/
+client/node_modules/
+server/node_modules/
+smart_contracts/node_modules/
+
+# Environment Variables (CRITICAL)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+client/.env
+server/.env
+smart_contracts/.env
+
+# Build Outputs
+client/dist/
+client/build/
+server/dist/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+server/logs/
+
+# Blockchain Specifics (Hardhat)
+smart_contracts/artifacts/
+smart_contracts/cache/
+smart_contracts/typechain/
+smart_contracts/typechain-types/
+smart_contracts/coverage/
+smart_contracts/coverage.json
+smart_contracts/.openzeppelin/
+
+# IDE & OS Files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.bak
