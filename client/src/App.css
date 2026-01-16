@@ -1,0 +1,31 @@
+/* Apply to html and body */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%; /* Add this to ensure full width */
+  background-color: #020617; /* Force dark background here to cover any gaps */
+  overflow: auto;
+  
+  /* Hide scrollbar for IE, Edge, Firefox */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Hide scrollbar for Chrome, Safari, Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* --- THE FIX FOR WHITE STRIPES --- */
+#root {
+  width: 100%;
+  max-width: 100%; /* Overrides any default constraints */
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: #020617; /* Ensures the app container is dark */
+  display: flex;             /* Helps children stretch */
+  flex-direction: column;
+}
